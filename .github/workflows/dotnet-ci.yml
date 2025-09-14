@@ -1,0 +1,29 @@
+name: .NET Build and Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Define os jobs que serão executados.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # 3. Restaura as dependências do projeto (pacotes NuGet).
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 4. Compila o projeto para garantir que não há erros de código.
+    - name: Build
+      run: dotnet build --no-restore
